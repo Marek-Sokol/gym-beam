@@ -1,14 +1,21 @@
-"use client"; // Required since we use React hooks
-
-import { createContext, useContext, type ReactNode, useState, useMemo, useEffect, useCallback } from "react";
+'use client';
+import {
+  createContext,
+  useContext,
+  type ReactNode,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback,
+} from 'react';
 
 interface AuthContextType {
   token: string | null;
   storeToken: (token: string) => void;
   clearToken: () => void;
-};
+}
 
-const TOKEN_KEY = "gb-token";
+const TOKEN_KEY = 'gb-token';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -20,35 +27,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       setToken(token);
     }
-  }, [])
+  }, []);
 
   const storeToken = useCallback((token: string) => {
-    if(!token) return;
+    if (!token) return;
+
     localStorage.setItem(TOKEN_KEY, token);
     setToken(token);
-  }, [])
+  }, []);
 
   const clearToken = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     setToken(null);
-  }, [])
+  }, []);
 
-  const authState = useMemo(() => ({
-    token,
-    storeToken,
-    clearToken,
-  }), [token, storeToken, clearToken]);
+  const authState = useMemo(
+    () => ({
+      token,
+      storeToken,
+      clearToken,
+    }),
+    [token, storeToken, clearToken]
+  );
 
   return (
-    <AuthContext.Provider value={authState}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
   );
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
 
   return context;
 }

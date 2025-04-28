@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { AuthButtons } from "@/components/ui/AuthButtons";
+import Image from 'next/image';
+import Link from 'next/link';
+import { AuthButtons } from '@/components/ui/AuthButtons';
 
-export function MainHeader () {
+export function MainHeader() {
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between">

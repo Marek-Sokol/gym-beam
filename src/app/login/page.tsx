@@ -3,11 +3,9 @@ import LoginForm from './_components/LoginForm';
 
 export const metadata: Metadata = {
   title: 'Login',
-  description: "Login page",
+  description: 'Login page',
 };
 
 export default function Login() {
-  return (
-    <LoginForm />
-  );
+  return <LoginForm />;
 }

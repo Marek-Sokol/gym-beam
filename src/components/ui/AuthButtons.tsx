@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button } from "@/components";
-import Link from "next/link";
-import { useAuth } from "@/contexts/AuthContext";
+import { Button } from '@/components';
+import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function AuthButtons() {
   const { token, clearToken } = useAuth();

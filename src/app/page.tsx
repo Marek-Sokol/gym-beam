@@ -1,9 +1,9 @@
-import { getProducts } from "../api/products.query";
-import { ProductCard } from "@/components";
+import { getProducts } from '../api/products.query';
+import { ProductCard } from '@/components';
 
 export const metadata = {
-  title: "Products",
-  description: "Browse our products",
+  title: 'Products',
+  description: 'Browse our products',
 };
 
 export default async function Home() {

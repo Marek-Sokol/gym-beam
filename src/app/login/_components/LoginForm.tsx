@@ -1,17 +1,17 @@
-"use client"
+'use client';
 import { InputText, Button } from '@/components';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useCallback } from 'react';
-import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/login.mutation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@/api/login.mutation';
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   username: z.string().min(3),
-  password: z.string().min(6, "Heslo musí mať minimálne 6 znakov"),
+  password: z.string().min(6, 'Heslo musí mať minimálne 6 znakov'),
 });
 
 type LoginFormData = z.infer<typeof schema>;
@@ -28,18 +28,25 @@ export default function LoginForm() {
     resolver: zodResolver(schema),
   });
 
-  const { isError, isPending, mutateAsync} = useMutation<string, Error, LoginFormData>({
+  const { isError, isPending, mutateAsync } = useMutation<
+    string,
+    Error,
+    LoginFormData
+  >({
     mutationFn: login,
-  })
+  });
 
-  const onSubmit = useCallback(async (data: LoginFormData) => {
-    if(isPending) return
-    const result = await mutateAsync(data);
-    if(!result) return
+  const onSubmit = useCallback(
+    async (data: LoginFormData) => {
+      if (isPending) return;
+      const result = await mutateAsync(data);
+      if (!result) return;
 
-    storeToken(result);
-    router.replace('/')
-  }, [isPending, mutateAsync, router, storeToken])
+      storeToken(result);
+      router.replace('/');
+    },
+    [isPending, mutateAsync, router, storeToken]
+  );
 
   return (
     <form
@@ -57,9 +64,13 @@ export default function LoginForm() {
         <InputText
           type="text"
           className="flex w-full border-2 border-black bg-transparent p-2 text-sm focus:border-black"
-          {...register("username")}
+          {...register('username')}
         />
-        {errors.username && <p className="absolute text-sm text-red-500 -bottom-5 left-0">{errors.username.message}</p>}
+        {errors.username && (
+          <p className="absolute text-sm text-red-500 -bottom-5 left-0">
+            {errors.username.message}
+          </p>
+        )}
       </div>
 
       <div className="flex w-full flex-col gap-y-2 relative">
@@ -69,14 +80,18 @@ export default function LoginForm() {
         <InputText
           type="password"
           className="flex w-full border-2 border-black bg-transparent p-2 text-sm focus:border-black"
-          {...register("password")}
+          {...register('password')}
         />
-        {errors.password && <p className="absolute text-sm text-red-500 -bottom-5 left-0">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="absolute text-sm text-red-500 -bottom-5 left-0">
+            {errors.password.message}
+          </p>
+        )}
       </div>
 
       <Button
         type="submit"
-        className='w-full mt-2 h-14 font-bold text-xl'
+        className="w-full mt-2 h-14 font-bold text-xl"
         disabled={isPending || !!token}
       >
         PRIHLÁSIŤ
