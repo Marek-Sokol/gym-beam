@@ -1,4 +1,4 @@
-import { getProducts } from '../api/products.query';
+import { getProducts } from './_lib/products.query';
 import { ProductCard } from '@/components';
 
 export const metadata = {

@@ -9,45 +9,53 @@ import {
   useCallback,
 } from 'react';
 
-interface AuthContextType {
-  token: string | null;
-  storeToken: (token: string) => void;
-  clearToken: () => void;
-}
+import { checkAuth } from '@/app/_lib/checkAuth.query';
+import { redirect } from 'next/navigation';
 
-const TOKEN_KEY = 'gb-token';
+interface AuthContextType {
+  isLoggedIn: boolean;
+  signOut: () => void;
+  signIn: () => void;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (token) {
-      setToken(token);
-    }
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkAuth().then((result) => {
+          setIsLoggedIn(result);
+
+          if (!result) {
+            redirect('/login');
+          }
+        });
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
-  const storeToken = useCallback((token: string) => {
-    if (!token) return;
-
-    localStorage.setItem(TOKEN_KEY, token);
-    setToken(token);
+  const signIn = useCallback(() => {
+    setIsLoggedIn(true);
   }, []);
 
-  const clearToken = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
-    setToken(null);
+  const signOut = useCallback(() => {
+    setIsLoggedIn(false);
   }, []);
 
   const authState = useMemo(
     () => ({
-      token,
-      storeToken,
-      clearToken,
+      isLoggedIn,
+      signIn,
+      signOut,
     }),
-    [token, storeToken, clearToken]
+    [isLoggedIn, signIn, signOut]
   );
 
   return (

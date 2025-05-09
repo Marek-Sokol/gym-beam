@@ -3,14 +3,21 @@
 import { Button } from '@/components';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCallback } from 'react';
+import { logoutAction } from '@/app/_lib/actions/logout';
 
 export function AuthButtons() {
-  const { token, clearToken } = useAuth();
+  const { isLoggedIn, signOut } = useAuth();
+
+  const logout = useCallback(async () => {
+    await logoutAction();
+    signOut();
+  }, [signOut]);
 
   return (
     <>
-      {token ? (
-        <Button onClick={clearToken}>Odhlásiť</Button>
+      {isLoggedIn ? (
+        <Button onClick={logout}>Odhlásiť</Button>
       ) : (
         <Link href="/login">
           <Button>Prihlásiť</Button>
