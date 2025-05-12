@@ -52,11 +52,10 @@ export default function LoginForm() {
         type="submit"
         className="w-full mt-2 h-14 font-bold text-xl"
         disabled={pending}
+        loading={pending}
       >
         PRIHLÁSIŤ
       </Button>
     </form>
   );
 }
-
-// johnd, m38rmF$

@@ -11,6 +11,8 @@ export async function loginAction(
   state: LoginFormState,
   formData: FormData
 ): Promise<LoginFormState> {
+  let token: string;
+
   const validationResult = schema.safeParse({
     username: formData.get('username') as string,
     password: formData.get('password') as string,
@@ -20,12 +22,16 @@ export async function loginAction(
     return { errors: validationResult.error.flatten().fieldErrors };
   }
 
-  const token = await login({
-    username: formData.get('username') as string,
-    password: formData.get('password') as string,
-  });
+  try {
+    token = await login({
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { errors: { username: [error.message] } };
+    }
 
-  if (!token) {
     return { errors: { username: ['Neplatné užívateľské meno alebo heslo'] } };
   }
 

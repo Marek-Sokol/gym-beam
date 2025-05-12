@@ -9,7 +9,7 @@ interface ProductProps {
 export function ProductCard({ product }: ProductProps) {
   return (
     <Link href={`/${product.id}`}>
-      <div className="flex flex-col flex-1">
+      <article className="flex flex-col flex-1">
         <div className="relative aspect-square w-full mb-2">
           <Image
             className="object-contain"
@@ -22,7 +22,7 @@ export function ProductCard({ product }: ProductProps) {
           {product.title}
         </h2>
         <p className="text-red-500">Cena: {product.price} €</p>
-      </div>
+      </article>
     </Link>
   );
 }

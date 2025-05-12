@@ -13,6 +13,12 @@ export async function login(postData: {
     }
   );
 
+  if (!response.ok) {
+    if (response.status === 401)
+      throw new Error('Invalid username or password');
+    throw new Error('Failed to fetch token');
+  }
+
   const token = await response.json();
 
   return token?.token as string;

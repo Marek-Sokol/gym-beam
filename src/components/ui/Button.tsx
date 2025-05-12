@@ -1,10 +1,17 @@
 import { twMerge as cn } from 'tailwind-merge';
+import { Spinner } from './Spinner';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  loading?: boolean;
 }
 
-export function Button({ children, className, ...props }: ButtonProps) {
+export function Button({
+  children,
+  className,
+  loading = false,
+  ...props
+}: ButtonProps) {
   return (
     <button
       className={cn(
@@ -14,7 +21,7 @@ export function Button({ children, className, ...props }: ButtonProps) {
       )}
       {...props}
     >
-      {children}
+      {loading ? <Spinner /> : children}
     </button>
   );
 }
